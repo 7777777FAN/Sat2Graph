@@ -1,0 +1,1 @@
+python train.py -model_save tmp -instance_id test -image_size 352 -model_recover ../data/20citiesModel/model300000 -mode test

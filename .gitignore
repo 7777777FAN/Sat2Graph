@@ -1,0 +1,10 @@
+data/
+__pycache__/
+*alllogs/
+*tmptest_352_8__channel12/
+*validation_test_352_8__channel12/
+*outputs*/
+json_files/
+
+
+

@@ -261,7 +261,7 @@ class Sat2GraphDataLoader():
 			
 
 
-			neighbors = pickle.load(open(self.folder + "/region_%d_refine_gt_graph.p" % ind))
+			neighbors = pickle.load(open(self.folder + "/region_%d_refine_gt_graph.p" % ind, 'rb'))
 			neighbors = neighbor_to_integer(neighbors)
 
 			if self.transpose:

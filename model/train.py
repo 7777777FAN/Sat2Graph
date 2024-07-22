@@ -82,7 +82,7 @@ instance_id = args.instance_id + "_" + str(args.image_size) + "_" + str(args.res
 run = "run-"+datetime.today().strftime('%Y-%m-%d-%H-%M-%S')+"-"+instance_id
 
 
-osmdataset = "../data/20cities/"
+osmdataset = "/home/godx/research/my_code/exp_repo/graph/RNGDetPP/cityscale/data/20cities/"
 spacenetdataset = "../data/spacenet/"
 
 image_size = args.image_size
@@ -190,14 +190,14 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 				gt_vector = np.pad(gt_vector, ((0,0),(32,32),(32,32),(0,0)), 'constant')
 				gt_prob = np.pad(gt_prob,((0,0),(32,32),(32,32),(0,0)), 'constant')
 				
-				for x in range(0,352*6-176-88,176/2):
+				for x in range(0,352*6-176-88,int(176/2)):
 					
-					progress = x/88
+					progress = int(x/88)
 
 					sys.stdout.write("\rProcessing Tile %d ...  "%tile_id + ">>" * progress + "--" * (20-progress))
 					sys.stdout.flush()
 
-					for y in range(0,352*6-176-88,176/2):
+					for y in range(0,352*6-176-88,int(176/2)):
 
 						alloutputs  = model.Evaluate(input_sat[:,x:x+image_size, y:y+image_size,:], gt_prob[:,x:x+image_size, y:y+image_size,:], gt_vector[:,x:x+image_size, y:y+image_size,:], gt_seg)
 						_output = alloutputs[1]
@@ -289,7 +289,7 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 
 	test_size = 32
 
-	for j in range(test_size/batch_size):
+	for j in range(int(test_size/batch_size)):
 		input_sat, gt_prob, gt_vector, gt_seg= dataloader_test.getBatch(batch_size)
 		validation_data.append([np.copy(input_sat), np.copy(gt_prob), np.copy(gt_vector), np.copy(gt_seg)])
 
@@ -334,7 +334,7 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 		t_train += time() - t0 			
 
 		if step % 10 == 0:
-			sys.stdout.write("\rbatch:%d "%step + ">>" * ((step - (step/200)*200)/10) + "--" * (((step/200+1)*200-step)/10))
+			sys.stdout.write("\rbatch:%d "%step + ">>" * int(((step - (step/200)*200)/10)) + "--" * int((((step/200+1)*200-step)/10)))
 			sys.stdout.flush()
 
 		if step > -1 and step % 200 == 0:
@@ -343,7 +343,7 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 			if step % 1000 == 0 or (step < 1000 and step % 200 == 0):
 				test_loss = 0
 
-				for j in range(-1,test_size/batch_size):
+				for j in range(-1,int(test_size/batch_size)):
 					if j >= 0:
 						input_sat, gt_prob, gt_vector, gt_seg = validation_data[j][0], validation_data[j][1], validation_data[j][2], validation_data[j][3]
 					if j == 0:
